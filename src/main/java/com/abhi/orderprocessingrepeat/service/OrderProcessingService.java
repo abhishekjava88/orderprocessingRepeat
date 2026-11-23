@@ -6,12 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
-
 public class OrderProcessingService {
 
     private List<Order> orderList;
@@ -24,7 +21,7 @@ public class OrderProcessingService {
     }
 
    public List<Order> getOrderList(){
-        return orderList;
+        return Collections.unmodifiableList(orderList);
    }
 
    public Optional<Order> findOrder(long orderId){
@@ -33,7 +30,7 @@ public class OrderProcessingService {
 
    public List<Order> createOrder(Order order){
         orderList.add(order);
-        return orderList;
+        return Collections.unmodifiableList(orderList);
    }
 
    public Optional<Order> deleteOrder(long orderId){
@@ -46,9 +43,9 @@ public class OrderProcessingService {
    }
 
     public Optional<Order> updateOrder(Order order){
-        Optional<Order> existingOrder = orderList.stream().filter(ord -> order.id() == order.id()).findFirst();
+        Optional<Order> existingOrder = orderList.stream().filter(ord -> ord.id() == order.id()).findFirst();
         if(existingOrder.isPresent()){
-            orderList.remove(existingOrder);
+            orderList.remove(existingOrder.get());
             orderList.add(order);
             return Optional.of(order);
         }
