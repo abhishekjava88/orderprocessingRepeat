@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
@@ -16,7 +17,7 @@ public class OrderProcessingController {
 
     private final OrderProcessingService orderProcessingService;
 
-    @GetMapping("/getAllOrders")
+    @GetMapping()
     public ResponseEntity<List<Order>> getOrders(){
         return ResponseEntity.ok().body(orderProcessingService.getOrderList());
     }
@@ -35,12 +36,12 @@ public class OrderProcessingController {
     }
 
 
-    @PutMapping()
-    public ResponseEntity<Order> updateOrder(@RequestBody Order order){
-       return orderProcessingService.updateOrder(order)
-               .map(order1 -> ResponseEntity.ok(order1))
-               .orElse(ResponseEntity.notFound().build());
-
+    @PutMapping("/{id}")
+    public ResponseEntity<Order> updateOrder(@PathVariable long id, @RequestBody Order order){
+        Optional<Order> existingOrder = orderProcessingService.findOrder(id);
+        return existingOrder
+                .map(order1 -> ResponseEntity.ok(orderProcessingService.updateOrder(order1,order)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

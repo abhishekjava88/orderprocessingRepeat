@@ -42,14 +42,10 @@ public class OrderProcessingService {
       return Optional.empty();
    }
 
-    public Optional<Order> updateOrder(Order order){
-        Optional<Order> existingOrder = orderList.stream().filter(ord -> ord.id() == order.id()).findFirst();
-        if(existingOrder.isPresent()){
-            orderList.remove(existingOrder.get());
-            orderList.add(order);
-            return Optional.of(order);
-        }
-        return Optional.empty();
+    public Order updateOrder(Order order, Order orderToUpdate){
+            orderList.remove(order);
+            orderList.add(orderToUpdate);
+            return orderToUpdate;
     }
 
 }
