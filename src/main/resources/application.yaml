@@ -1,3 +1,20 @@
 spring:
   application:
     name: orderprocessingRepeat
+
+  datasource:
+    url: jdbc:h2:mem:ordersdb      # in-memory H2 database named "ordersdb"
+    username: sa                   # H2 default user
+    password:                      # empty password
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop        # Hibernate creates tables on startup, drops them on shutdown
+    show-sql: true                 # print SQL to the console
+    properties:
+      hibernate:
+        format_sql: true           # pretty-print that SQL
+
+  h2:
+    console:
+      enabled: true                # browser UI at /h2-console
