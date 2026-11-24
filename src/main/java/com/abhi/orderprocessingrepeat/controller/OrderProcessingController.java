@@ -38,9 +38,7 @@ public class OrderProcessingController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Order> updateOrder(@PathVariable long id, @RequestBody Order order){
-        Optional<Order> existingOrder = orderProcessingService.findOrder(id);
-        return existingOrder
-                .map(order1 -> ResponseEntity.ok(orderProcessingService.updateOrder(order1,order)))
+        return orderProcessingService.updateOrder(id, order).map(order1 -> ResponseEntity.ok(order1))
                 .orElse(ResponseEntity.notFound().build());
     }
 
