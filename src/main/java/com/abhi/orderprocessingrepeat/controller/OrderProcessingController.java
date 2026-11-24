@@ -1,17 +1,15 @@
 package com.abhi.orderprocessingrepeat.controller;
 
-import com.abhi.orderprocessingrepeat.model.CreateOrderRequest;
-import com.abhi.orderprocessingrepeat.model.Order;
-import com.abhi.orderprocessingrepeat.model.OrderResponse;
-import com.abhi.orderprocessingrepeat.model.Status;
+import com.abhi.orderprocessingrepeat.dto.CreateOrderRequest;
+import com.abhi.orderprocessingrepeat.dto.OrderResponse;
+import com.abhi.orderprocessingrepeat.dto.UpdateOrderRequest;
 import com.abhi.orderprocessingrepeat.service.OrderProcessingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import static com.abhi.orderprocessingrepeat.model.OrderResponse.from;
+import static com.abhi.orderprocessingrepeat.dto.OrderResponse.from;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
@@ -33,17 +31,13 @@ public class OrderProcessingController {
 
     @PostMapping()
     public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest createOrderRequest){
-        Order orderToCreate = new Order();
-        orderToCreate.setProduct(createOrderRequest.product());
-        orderToCreate.setAmount(createOrderRequest.amount());
-        orderToCreate.setStatus(Status.PENDING);
-        return ResponseEntity.ok(from(orderProcessingService.createOrder(orderToCreate)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(from(orderProcessingService.createOrder(createOrderRequest.product(),createOrderRequest.amount())));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderResponse> updateOrder(@PathVariable long id, @RequestBody Order order){
-        return ResponseEntity.ok(from(orderProcessingService.updateOrder(id,order)));
+    public ResponseEntity<OrderResponse> updateOrder(@PathVariable long id, @RequestBody UpdateOrderRequest updateOrderRequest){
+        return ResponseEntity.ok(from(orderProcessingService.updateOrder(id,updateOrderRequest.product(),updateOrderRequest.amount(),updateOrderRequest.status())));
     }
 
     @DeleteMapping("/{id}")

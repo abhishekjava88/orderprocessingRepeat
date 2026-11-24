@@ -1,4 +1,7 @@
-package com.abhi.orderprocessingrepeat.model;
+package com.abhi.orderprocessingrepeat.dto;
+
+import com.abhi.orderprocessingrepeat.model.Order;
+import com.abhi.orderprocessingrepeat.model.Status;
 
 import java.math.BigDecimal;
 

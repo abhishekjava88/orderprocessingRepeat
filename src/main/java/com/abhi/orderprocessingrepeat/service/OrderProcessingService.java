@@ -4,9 +4,8 @@ import com.abhi.orderprocessingrepeat.exception.OrderNotFoundException;
 import com.abhi.orderprocessingrepeat.model.Order;
 import com.abhi.orderprocessingrepeat.model.Status;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.*;
 
 @Service
@@ -27,13 +26,17 @@ public class OrderProcessingService {
 
    public Order findOrder(long orderId){
         return orderList.stream().filter(order -> order.getId() == orderId).findFirst()
-                .orElseThrow(()-> new OrderNotFoundException("Order not Found"));
+                .orElseThrow(()-> new OrderNotFoundException(MessageFormat.format("Order {0} not Found.", orderId)));
    }
 
-   public Order createOrder(Order order){
-        order.setId(orderList.size()+1);
-        orderList.add(order);
-        return order;
+   public Order createOrder(String product, BigDecimal amount){
+        Order orderToCreate = new Order();
+        orderToCreate.setProduct(product);
+        orderToCreate.setAmount(amount);
+        orderToCreate.setStatus(Status.PENDING);
+        orderToCreate.setId(orderList.size()+1);
+        orderList.add(orderToCreate);
+        return orderToCreate;
    }
 
    public Order deleteOrder(long orderId){
@@ -42,11 +45,11 @@ public class OrderProcessingService {
         return orderToDelete;
    }
 
-    public Order updateOrder(long orderId, Order newOrder){
+    public Order updateOrder(long orderId, String product, BigDecimal amount, Status status){
         Order orderToUpdate = findOrder(orderId);
-        orderToUpdate.setProduct(newOrder.getProduct());
-        orderToUpdate.setAmount(newOrder.getAmount());
-        orderToUpdate.setStatus(newOrder.getStatus());
+        orderToUpdate.setProduct(product);
+        orderToUpdate.setAmount(amount);
+        orderToUpdate.setStatus(status);
         return orderToUpdate;
     }
 }

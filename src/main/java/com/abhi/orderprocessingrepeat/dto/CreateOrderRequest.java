@@ -1,4 +1,4 @@
-package com.abhi.orderprocessingrepeat.model;
+package com.abhi.orderprocessingrepeat.dto;
 
 import java.math.BigDecimal;
 
