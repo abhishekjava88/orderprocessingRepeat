@@ -22,12 +22,12 @@ public class OrderProcessingController {
     @GetMapping()
     public ResponseEntity<List<OrderResponse>> getOrders(){
         return ResponseEntity.ok().body(orderProcessingService.getOrderList().stream().map(
-                order -> from(order)).toList());
+                order -> OrderResponse.from(order)).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> findOrder(@PathVariable long id){
-        return ResponseEntity.ok(from(orderProcessingService.findOrder(id)));
+        return ResponseEntity.ok(OrderResponse.from(orderProcessingService.findOrder(id)));
     }
 
     @PostMapping()
@@ -45,6 +45,6 @@ public class OrderProcessingController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<OrderResponse> deleteOrder(@PathVariable long id){
-        return ResponseEntity.ok(from(orderProcessingService.deleteOrder(id)));
+        return ResponseEntity.ok(OrderResponse.from(orderProcessingService.deleteOrder(id)));
     }
 }
