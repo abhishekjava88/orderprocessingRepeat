@@ -1,5 +1,6 @@
 package com.abhi.orderprocessingrepeat.service;
 
+import com.abhi.orderprocessingrepeat.exception.OrderNotFoundException;
 import com.abhi.orderprocessingrepeat.model.Order;
 import com.abhi.orderprocessingrepeat.model.Status;
 import org.springframework.stereotype.Service;
@@ -21,33 +22,31 @@ public class OrderProcessingService {
     }
 
    public List<Order> getOrderList(){
-        return Collections.unmodifiableList(orderList);
-   }
-
-   public Optional<Order> findOrder(long orderId){
-        return orderList.stream().filter(order -> order.id() == orderId).findFirst();
-   }
-
-   public List<Order> createOrder(Order order){
-        orderList.add(order);
         return List.copyOf(orderList);
    }
 
-   public Optional<Order> deleteOrder(long orderId){
-       Optional<Order> result = findOrder(orderId);
-       return result.map(order -> {
-           orderList.remove(order);
-           return Optional.of(order);
-       }).orElse(Optional.empty());
+   public Order findOrder(long orderId){
+        return orderList.stream().filter(order -> order.getId() == orderId).findFirst()
+                .orElseThrow(()-> new OrderNotFoundException("Order not Found"));
    }
 
-    public Optional<Order> updateOrder(long id, Order newOrder){
-        Optional<Order> result = orderList.stream().filter(order -> order.id() == id).findFirst();
-        return result.map(order -> {
-            orderList.remove(order);
-            Order orderToUpdate = new Order(id, newOrder.product(), newOrder.amount(), newOrder.status());
-            orderList.add(orderToUpdate);
-            return Optional.of(orderToUpdate);
-        }).orElse(Optional.empty());
+   public Order createOrder(Order order){
+        order.setId(orderList.size()+1);
+        orderList.add(order);
+        return order;
+   }
+
+   public Order deleteOrder(long orderId){
+        Order orderToDelete = findOrder(orderId);
+        orderList.remove(orderToDelete);
+        return orderToDelete;
+   }
+
+    public Order updateOrder(long orderId, Order newOrder){
+        Order orderToUpdate = findOrder(orderId);
+        orderToUpdate.setProduct(newOrder.getProduct());
+        orderToUpdate.setAmount(newOrder.getAmount());
+        orderToUpdate.setStatus(newOrder.getStatus());
+        return orderToUpdate;
     }
 }
