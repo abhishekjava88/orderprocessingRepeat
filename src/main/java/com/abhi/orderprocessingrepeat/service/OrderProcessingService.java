@@ -26,7 +26,7 @@ public class OrderProcessingService {
 
    public Order findOrder(long orderId){
         return orderList.stream().filter(order -> order.getId() == orderId).findFirst()
-                .orElseThrow(()-> new OrderNotFoundException(MessageFormat.format("Order {0} not Found.", orderId)));
+                .orElseThrow(()-> new OrderNotFoundException(("Order %d not found.".formatted(orderId))));
    }
 
    public Order createOrder(String product, BigDecimal amount){
