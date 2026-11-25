@@ -6,7 +6,7 @@ import com.abhi.orderprocessingrepeat.model.Status;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public record OrderResponse(long id, String product, BigDecimal amount, Status status, Instant createdAt, Instant updatedAt) {
+public record OrderResponse(Long id, String product, BigDecimal amount, Status status, Instant createdAt, Instant updatedAt) {
     public static OrderResponse from(Order order){
         return new OrderResponse(order.getId(),order.getProduct(),order.getAmount(),order.getStatus(), order.getCreatedAt(), order.getUpdatedAt());
     }

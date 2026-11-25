@@ -8,10 +8,14 @@ import java.time.Instant;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "orders")
 public class Order {
+    Order(String product,BigDecimal amount){
+        this.product = product;
+        this.amount = amount;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

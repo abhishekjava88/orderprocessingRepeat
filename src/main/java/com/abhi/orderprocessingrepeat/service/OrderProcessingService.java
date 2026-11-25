@@ -36,7 +36,7 @@ public class OrderProcessingService {
         return dbOrder;
    }
 
-
+   @Transactional
    public Order deleteOrder(long orderId){
         Order orderToDelete = findOrder(orderId);
         orderRepository.delete(orderToDelete);
