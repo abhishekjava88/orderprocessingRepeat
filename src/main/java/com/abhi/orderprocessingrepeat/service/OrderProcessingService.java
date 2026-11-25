@@ -29,9 +29,7 @@ public class OrderProcessingService {
 
    @Transactional
    public Order createOrder(String product, BigDecimal amount){
-        Order orderToCreate = new Order();
-        orderToCreate.setProduct(product);
-        orderToCreate.setAmount(amount);
+        Order orderToCreate = new Order(product,amount);
         Order dbOrder = orderRepository.save(orderToCreate);
         return dbOrder;
    }

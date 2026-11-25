@@ -9,9 +9,10 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders")
 public class Order {
-    Order(String product,BigDecimal amount){
+    public Order(String product,BigDecimal amount){
         this.product = product;
         this.amount = amount;
     }
