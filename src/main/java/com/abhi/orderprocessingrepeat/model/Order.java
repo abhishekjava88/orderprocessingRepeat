@@ -1,17 +1,13 @@
 package com.abhi.orderprocessingrepeat.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
@@ -32,6 +28,8 @@ public class Order {
 
     @Column(nullable = false,updatable = false)
     private Instant createdAt;
+
+    @Column(nullable = false)
     private Instant updatedAt;
 
     @PrePersist
